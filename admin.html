@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo - KS IMPORTES</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <header>
+        <h1>KS IMPORTES</h1>
+        <p>Painel Administrativo</p>
+    </header>
+    <main>
+        <section class="formulario">
+            <h2>Novo Produto</h2>
+            <input type="hidden" id="idProduto">
+            <label>Nome do Produto</label>
+            <input type="text" id="nome">
+            <label>Preço Atual</label>
+            <input type="text" id="preco" inputmode="decimal" placeholder="Ex: 790,00">
+            <label>Preço Antigo</label>
+            <input type="text" id="precoAntigo" inputmode="decimal" placeholder="Ex: 1.400,00">
+            <label>Imagem</label>
+            <input type="file" id="imagem" accept="image/*">
+            <button id="salvar">
+                <i class="bi bi-floppy"></i>
+                Salvar Produto
+            </button>
+        </section>
+        <section class="lista">
+            <h2>Produtos Cadastrados</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Imagem</th>
+                        <th>Produto</th>
+                        <th>Preço</th>
+                        <th>Desconto</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="listaProdutos">
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>
