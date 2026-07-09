@@ -433,9 +433,6 @@ footer {
     header .menu ul#nav_list.aberto {
         display: flex;
     }
-    header .menu ul#nav_list li {
-        padding: 12px 40px;
-    }
     header {
         position: relative;
         padding: 0px 20px;
