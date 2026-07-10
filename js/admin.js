@@ -26,7 +26,7 @@ let produtos = [];
 
 async function carregarProdutos() {
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
         .from("produtos")
         .select("*")
         .order("id", { ascending: false });
@@ -226,7 +226,7 @@ async function gravarProduto(idEditando, imagemBase64) {
     if (idEditando) {
 
         const resposta =
-            await supabase
+            await supabaseClient
 
                 .from("produtos")
 
@@ -245,7 +245,7 @@ async function gravarProduto(idEditando, imagemBase64) {
     else {
 
         const resposta =
-            await supabase
+            await supabaseClient
 
                 .from("produtos")
 
@@ -305,7 +305,7 @@ tabela.addEventListener("click", async function (e) {
         if (!confirmar) return;
 
 
-        const { error } = await supabase
+        const { error } = await supabaseClient
 
             .from("produtos")
 
