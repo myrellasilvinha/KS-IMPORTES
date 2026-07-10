@@ -182,7 +182,7 @@ function renderizarProduto(produto) {
 
         <img 
 
-            src="${produto.imagem}"
+            src="${produto.image}"
 
             alt="${produto.nome}"
 

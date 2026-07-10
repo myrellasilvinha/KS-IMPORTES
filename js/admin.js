@@ -81,7 +81,7 @@ function mostrarProdutos() {
     <td>
 
         <img
-            src="${produto.imagem}"
+            src="${produto.image}"
             width="70"
         >
 
@@ -184,7 +184,7 @@ async function salvarProduto() {
 
             if (existente) {
 
-                imagemAtual = existente.imagem;
+                imagemAtual = existente.image;
 
             }
 
@@ -238,7 +238,7 @@ async function gravarProduto(idEditando, imagemBase64) {
 
         precoAntigo: precoAntigoConvertido,
 
-        imagem: imagemBase64
+        image: imagemBase64
 
     };
 
@@ -520,7 +520,7 @@ function mostrarProdutos() {
             <td>
 
                 <img 
-                    src="${produto.imagem}"
+                    src="${produto.image}"
                     width="70"
                 >
 
