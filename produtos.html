@@ -44,9 +44,55 @@
         </div>
     </header>
 
-    <main>
-        <section class="cards" id="cards">
-        </section>
+    <main class="produtos-layout">
+        <button class="botao-filtros-mobile" id="botaoFiltrosMobile">
+            <i class="bi bi-sliders"></i>
+            Filtros
+        </button>
+
+        <aside class="filtros" id="filtros">
+            <h2>Filtrar</h2>
+
+            <div class="filtro-grupo">
+                <label for="busca">Pesquisar</label>
+                <div class="campo-busca">
+                    <i class="bi bi-search"></i>
+                    <input type="text" id="busca" placeholder="Buscar produto...">
+                </div>
+            </div>
+
+            <div class="filtro-grupo">
+                <label for="ordenar">Ordenar</label>
+                <select id="ordenar">
+                    <option value="relevancia">Relevância</option>
+                    <option value="preco-asc">Preço: menor ao maior</option>
+                    <option value="preco-desc">Preço: maior ao menor</option>
+                    <option value="az">A - Z</option>
+                    <option value="za">Z - A</option>
+                    <option value="novo">Mais novo ao mais antigo</option>
+                    <option value="antigo">Mais antigo ao mais novo</option>
+                    <option value="vendidos">Mais vendidos</option>
+                </select>
+            </div>
+
+            <div class="filtro-grupo">
+                <label>Preço</label>
+                <div class="campo-preco">
+                    <input type="text" id="precoDe" inputmode="decimal" placeholder="De">
+                    <span>—</span>
+                    <input type="text" id="precoAte" inputmode="decimal" placeholder="Até">
+                </div>
+            </div>
+
+            <button id="aplicarFiltros" class="botao-aplicar">
+                Aplicar
+            </button>
+        </aside>
+
+        <div class="conteudo-produtos">
+            <section class="cards" id="cards">
+            </section>
+        </div>
     </main>
 
     <footer>
@@ -57,6 +103,7 @@
     <script src="js/supabase.js"></script>
     <script src="js/script.js"></script>
     <script src="js/menu.js"></script>
+    <script src="js/topo.js"></script>
 </body>
 
 </html>

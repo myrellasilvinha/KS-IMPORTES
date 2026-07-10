@@ -104,7 +104,6 @@ async function buscarProduto() {
     renderizarProduto(data);
 
 
-
 }
 
 
@@ -143,128 +142,79 @@ function mostrarErro() {
 
 function renderizarProduto(produto) {
 
+    const emPromocao = !!produto.emPromocao;
 
+    const seloDesconto = emPromocao
+        ? (() => {
+            const desconto = Math.round(
+                ((produto.precoAntigo - produto.preco) / produto.precoAntigo) * 100
+            );
+            return `<span class="desconto">${isNaN(desconto) ? 0 : desconto}% OFF</span>`;
+        })()
+        : "";
 
-    const desconto = Math.round(
+    const precoAntigoHtml = emPromocao
+        ? `<span class="antigo">${formatarPreco(produto.precoAntigo)}</span>`
+        : "";
 
-        ((produto.precoAntigo - produto.preco)
+    const grupoHtml = produto.grupo
+        ? `<span class="grupo-tag">${produto.grupo}</span>`
+        : "";
 
-            /
-
-            produto.precoAntigo)
-
-        *
-
-        100
-
-    );
-
-
-
-
+    const descricaoHtml = produto.descricao
+        ? `
+        <div class="produto-descricao">
+            <h2>Descrição</h2>
+            <p>${produto.descricao}</p>
+            ${grupoHtml}
+        </div>
+        `
+        : (grupoHtml ? `<div class="produto-descricao">${grupoHtml}</div>` : "");
 
     produtoPage.innerHTML = `
 
-
-
     <div class="produto-imagem">
 
-
-        <span class="desconto">
-
-
-            ${desconto}% OFF
-
-
-        </span>
-
-
+        ${seloDesconto}
 
         <img 
-
             src="${produto.image}"
-
             alt="${produto.nome}"
-
         >
 
-
-
     </div>
-
-
-
 
 
     <div class="produto-info">
 
-
-
         <h1>
-
             ${produto.nome}
-
         </h1>
-
-
-
 
         <div class="precos-produto">
 
-
             <span class="novo">
-
-
                 ${formatarPreco(produto.preco)}
-
-
             </span>
 
-
-
-            <span class="antigo">
-
-
-                ${formatarPreco(produto.precoAntigo)}
-
-
-            </span>
-
-
+            ${precoAntigoHtml}
 
         </div>
 
-
-
-
-
         <button 
-
             class="botao-comprar"
-
             id="comprar"
-
         >
-
             Comprar
-
-
         </button>
 
-
-
+        ${descricaoHtml}
 
     </div>
 
-
-
     `;
 
-
-
     ativarBotaoComprar(produto);
-
-
 
 }
 

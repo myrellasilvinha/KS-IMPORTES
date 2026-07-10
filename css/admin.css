@@ -68,11 +68,17 @@ main {
     margin-bottom: 8px;
 }
 
-.formulario input {
+.formulario input,
+.formulario textarea {
     width: 100%;
     padding: 12px;
     border: 1px solid var(--black--color);
     border-radius: 8px;
+}
+
+.formulario textarea {
+    resize: vertical;
+    font-family: inherit;
 }
 
 button {
@@ -85,6 +91,96 @@ button {
     border-radius: 8px;
     cursor: pointer;
     font-size: 17px;
+}
+
+.escondido {
+    display: none !important;
+}
+
+.toggle-linha {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 18px;
+    background: #111;
+    padding: 12px 14px;
+    border-radius: 8px;
+}
+
+.toggle-label {
+    margin: 0;
+    font-size: 15px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 26px;
+    flex-shrink: 0;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #444;
+    transition: .3s;
+    border-radius: 26px;
+}
+
+.switch .slider::before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--white--color);
+    transition: .3s;
+    border-radius: 50%;
+}
+
+.switch input:checked+.slider {
+    background-color: var(--orange--color);
+}
+
+.switch input:checked+.slider::before {
+    transform: translateX(20px);
+}
+
+.selo-promocao {
+    background: var(--orange--color);
+    color: var(--black--color);
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.selo-sem-promocao {
+    color: #888;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.grupo-badge {
+    background: #1c1c1c;
+    color: var(--orange--color);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    white-space: nowrap;
 }
 
 .lista {

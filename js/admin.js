@@ -1,5 +1,5 @@
 // ================================
-// ADMIN.JS - PARTE 1
+// ADMIN.JS
 // Conexão + Variáveis + Listagem
 // ================================
 
@@ -10,6 +10,12 @@ const tabela = document.getElementById("listaProdutos");
 
 const idProduto = document.getElementById("idProduto");
 const nome = document.getElementById("nome");
+const grupo = document.getElementById("grupo");
+const listaGrupos = document.getElementById("listaGrupos");
+const descricao = document.getElementById("descricao");
+const promocaoAtiva = document.getElementById("promocaoAtiva");
+const labelPreco = document.getElementById("labelPreco");
+const wrapperPrecoAntigo = document.getElementById("wrapperPrecoAntigo");
 const preco = document.getElementById("preco");
 const precoAntigo = document.getElementById("precoAntigo");
 const imagem = document.getElementById("imagem");
@@ -19,6 +25,65 @@ const botaoSalvar = document.getElementById("salvar");
 botaoSalvar.addEventListener("click", salvarProduto);
 
 let produtos = [];
+
+// ================================
+// GRUPOS PADRÃO (sugestões iniciais)
+// ================================
+
+const GRUPOS_PADRAO = [
+    "Tirzepatida",
+    "Retatrutide",
+    "Semaglutida",
+    "Peptídeos",
+    "Outros"
+];
+
+// ================================
+// TOGGLE DE PROMOÇÃO
+// ================================
+
+function atualizarVisualPromocao() {
+
+    if (promocaoAtiva.checked) {
+
+        wrapperPrecoAntigo.classList.remove("escondido");
+        precoAntigo.required = true;
+        labelPreco.textContent = "Preço Atual (por)";
+
+    } else {
+
+        wrapperPrecoAntigo.classList.add("escondido");
+        precoAntigo.required = false;
+        precoAntigo.value = "";
+        labelPreco.textContent = "Preço";
+
+    }
+
+}
+
+promocaoAtiva.addEventListener("change", atualizarVisualPromocao);
+
+atualizarVisualPromocao();
+
+// ================================
+// PREENCHER SUGESTÕES DE GRUPO
+// ================================
+
+function atualizarListaGrupos() {
+
+    const gruposExistentes = produtos
+        .map(p => p.grupo)
+        .filter(Boolean);
+
+    const todosGrupos = Array.from(
+        new Set([...GRUPOS_PADRAO, ...gruposExistentes])
+    );
+
+    listaGrupos.innerHTML = todosGrupos
+        .map(g => `<option value="${g}"></option>`)
+        .join("");
+
+}
 
 // ================================
 // CARREGAR PRODUTOS
@@ -38,6 +103,8 @@ async function carregarProdutos() {
     }
 
     produtos = data;
+
+    atualizarListaGrupos();
 
     mostrarProdutos();
 
@@ -65,79 +132,66 @@ function mostrarProdutos() {
 
     tabela.innerHTML = "";
 
+    if (produtos.length === 0) {
+
+        tabela.innerHTML = `
+            <tr>
+                <td colspan="6">
+                    <div class="sem-produtos">
+                        <i class="bi bi-box-seam"></i>
+                        <h2>Nenhum produto cadastrado.</h2>
+                    </div>
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
     produtos.forEach(produto => {
 
-        const desconto = Math.round(
+        const emPromocao = !!produto.emPromocao;
 
-            ((produto.precoAntigo - produto.preco)
-                / produto.precoAntigo) * 100
-
-        );
+        const selo = emPromocao
+            ? (() => {
+                const desconto = Math.round(
+                    ((produto.precoAntigo - produto.preco) / produto.precoAntigo) * 100
+                );
+                return `<span class="selo-promocao">${isNaN(desconto) ? 0 : desconto}% OFF</span>`;
+            })()
+            : `<span class="selo-sem-promocao">Sem promoção</span>`;
 
         tabela.innerHTML += `
-
-<tr>
-
-    <td>
-
-        <img
-            src="${produto.image}"
-            width="70"
-        >
-
-    </td>
-
-    <td>
-
-        ${produto.nome}
-
-    </td>
-
-    <td>
-
-        R$ ${formatarPreco(produto.preco)}
-
-    </td>
-
-    <td>
-
-        ${desconto}% OFF
-
-    </td>
-
-    <td>
-
-        <button
-            class="editar"
-            data-id="${produto.id}"
-        >
-
-            Editar
-
-        </button>
-
-        <button
-            class="excluir"
-            data-id="${produto.id}"
-        >
-
-            Excluir
-
-        </button>
-
-    </td>
-
-</tr>
-
-`;
+            <tr>
+                <td>
+                    <img src="${produto.image}" width="70">
+                </td>
+                <td>
+                    ${produto.nome}
+                </td>
+                <td>
+                    <span class="grupo-badge">${produto.grupo ? produto.grupo : "Sem grupo"}</span>
+                </td>
+                <td>
+                    R$ ${formatarPreco(produto.preco)}
+                </td>
+                <td>
+                    ${selo}
+                </td>
+                <td>
+                    <button class="editar" data-id="${produto.id}">Editar</button>
+                    <button class="excluir" data-id="${produto.id}">Excluir</button>
+                </td>
+            </tr>
+        `;
 
     });
 
 }
 
 // ================================
-// ADMIN.JS - PARTE 2
-// Salvar / Atualizar Produto
+// SALVAR PRODUTO
 // ================================
 
 async function salvarProduto() {
@@ -145,9 +199,10 @@ async function salvarProduto() {
     if (
         nome.value.trim() === "" ||
         preco.value.trim() === "" ||
-        precoAntigo.value.trim() === ""
+        grupo.value.trim() === "" ||
+        (promocaoAtiva.checked && precoAntigo.value.trim() === "")
     ) {
-        alert("Preencha todos os campos.");
+        alert("Preencha todos os campos obrigatórios.");
         return;
     }
 
@@ -188,6 +243,9 @@ async function salvarProduto() {
 
             }
 
+        } else {
+            alert("Selecione uma imagem para o produto.");
+            return;
         }
 
         gravarProduto(
@@ -222,17 +280,37 @@ function converterParaNumero(valorTexto) {
 
 async function gravarProduto(idEditando, imagemBase64) {
 
-    const precoConvertido = converterParaNumero(preco.value);
-    const precoAntigoConvertido = converterParaNumero(precoAntigo.value);
+    const emPromocao = promocaoAtiva.checked;
 
-    if (isNaN(precoConvertido) || isNaN(precoAntigoConvertido)) {
+    const precoConvertido = converterParaNumero(preco.value);
+
+    if (isNaN(precoConvertido)) {
         alert("Preço inválido. Use o formato: 790,00");
         return;
+    }
+
+    let precoAntigoConvertido = null;
+
+    if (emPromocao) {
+
+        precoAntigoConvertido = converterParaNumero(precoAntigo.value);
+
+        if (isNaN(precoAntigoConvertido)) {
+            alert("Preço antigo inválido. Use o formato: 1.400,00");
+            return;
+        }
+
     }
 
     const produto = {
 
         nome: nome.value.trim(),
+
+        grupo: grupo.value.trim(),
+
+        descricao: descricao.value.trim(),
+
+        emPromocao: emPromocao,
 
         preco: precoConvertido,
 
@@ -252,11 +330,8 @@ async function gravarProduto(idEditando, imagemBase64) {
 
         const resposta =
             await supabaseClient
-
                 .from("produtos")
-
                 .update(produto)
-
                 .eq("id", Number(idEditando));
 
         error = resposta.error;
@@ -271,9 +346,7 @@ async function gravarProduto(idEditando, imagemBase64) {
 
         const resposta =
             await supabaseClient
-
                 .from("produtos")
-
                 .insert(produto);
 
         error = resposta.error;
@@ -298,12 +371,6 @@ async function gravarProduto(idEditando, imagemBase64) {
 
 }
 
-// ================================
-// ADMIN.JS - PARTE 3
-// Editar / Excluir / Limpar
-// ================================
-
-
 // =====================================
 // EVENTOS DOS BOTÕES DA TABELA
 // =====================================
@@ -314,55 +381,38 @@ tabela.addEventListener("click", async function (e) {
 
     if (!id) return;
 
-
     // ======================
     // EXCLUIR PRODUTO
     // ======================
 
     if (e.target.classList.contains("excluir")) {
 
-
         const confirmar = confirm(
             "Deseja realmente excluir este produto?"
         );
 
-
         if (!confirmar) return;
 
-
         const { error } = await supabaseClient
-
             .from("produtos")
-
             .delete()
-
             .eq("id", Number(id));
-
 
         if (error) {
 
             console.error(error);
 
-            alert(
-                "Erro ao excluir produto."
-            );
+            alert("Erro ao excluir produto.");
 
             return;
 
         }
 
-
-        alert(
-            "Produto excluído com sucesso!"
-        );
-
+        alert("Produto excluído com sucesso!");
 
         carregarProdutos();
 
-
     }
-
-
 
     // ======================
     // EDITAR PRODUTO
@@ -370,54 +420,45 @@ tabela.addEventListener("click", async function (e) {
 
     if (e.target.classList.contains("editar")) {
 
-
         const produto =
             produtos.find(
                 p => p.id == id
             );
 
-
         if (!produto) return;
 
+        idProduto.value = produto.id;
 
+        nome.value = produto.nome;
 
-        idProduto.value =
-            produto.id;
+        grupo.value = produto.grupo || "";
 
+        descricao.value = produto.descricao || "";
 
-        nome.value =
-            produto.nome;
+        preco.value = produto.preco;
 
+        const temPromocao = !!produto.emPromocao;
 
-        preco.value =
-            produto.preco;
+        promocaoAtiva.checked = temPromocao;
 
+        atualizarVisualPromocao();
 
-        precoAntigo.value =
-            produto.precoAntigo;
-
-
+        precoAntigo.value = temPromocao && produto.precoAntigo != null
+            ? produto.precoAntigo
+            : "";
 
         // O input file não pode
         // ser preenchido pelo JS
         // por segurança do navegador
 
-
         window.scrollTo({
-
             top: 0,
-
             behavior: "smooth"
-
         });
-
 
     }
 
-
 });
-
-
 
 // =====================================
 // LIMPAR FORMULÁRIO
@@ -425,29 +466,25 @@ tabela.addEventListener("click", async function (e) {
 
 function limparFormulario() {
 
-
     idProduto.value = "";
-
 
     nome.value = "";
 
+    grupo.value = "";
+
+    descricao.value = "";
 
     preco.value = "";
 
-
     precoAntigo.value = "";
-
 
     imagem.value = "";
 
+    promocaoAtiva.checked = false;
+
+    atualizarVisualPromocao();
 
 }
-
-// ================================
-// ADMIN.JS - PARTE 4
-// Ajustes finais e segurança
-// ================================
-
 
 // =====================================
 // VERIFICAR ELEMENTOS DO PAINEL
@@ -460,130 +497,6 @@ if (!tabela) {
     );
 
 }
-
-
-// =====================================
-// CASO NÃO TENHA PRODUTOS
-// =====================================
-
-function mostrarProdutos() {
-
-    tabela.innerHTML = "";
-
-
-    if (produtos.length === 0) {
-
-        tabela.innerHTML = `
-
-        <tr>
-
-            <td colspan="5">
-
-                <div class="sem-produtos">
-
-                    <i class="bi bi-box-seam"></i>
-
-                    <h2>
-                        Nenhum produto cadastrado.
-                    </h2>
-
-                </div>
-
-            </td>
-
-        </tr>
-
-        `;
-
-        return;
-
-    }
-
-
-
-    produtos.forEach(produto => {
-
-
-        const desconto = Math.round(
-
-            ((produto.precoAntigo - produto.preco)
-                /
-                produto.precoAntigo) * 100
-
-        );
-
-
-        tabela.innerHTML += `
-
-        <tr>
-
-            <td>
-
-                <img 
-                    src="${produto.image}"
-                    width="70"
-                >
-
-            </td>
-
-
-            <td>
-
-                ${produto.nome}
-
-            </td>
-
-
-            <td>
-
-                R$ ${formatarPreco(produto.preco)}
-
-            </td>
-
-
-            <td>
-
-                ${desconto}% OFF
-
-            </td>
-
-
-            <td>
-
-
-                <button 
-                    class="editar"
-                    data-id="${produto.id}"
-                >
-
-                    Editar
-
-                </button>
-
-
-                <button 
-                    class="excluir"
-                    data-id="${produto.id}"
-                >
-
-                    Excluir
-
-                </button>
-
-
-            </td>
-
-
-        </tr>
-
-        `;
-
-
-    });
-
-
-}
-
 
 // =====================================
 // RECARREGAR AO VOLTAR PARA A PÁGINA
