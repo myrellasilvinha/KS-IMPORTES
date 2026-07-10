@@ -115,28 +115,23 @@ async function buscarProduto() {
 
 function mostrarErro() {
 
-
     produtoPage.innerHTML = `
-
 
     <div class="sem-produtos">
 
-
         <i class="bi bi-box-seam"></i>
 
-
         <h2>
-
-            Produto não encontrado.
-
+            Nenhum produto cadastrado.
         </h2>
 
+        <p>
+            No momento não temos produtos disponíveis.
+        </p>
 
     </div>
 
-
     `;
-
 
 }
 
