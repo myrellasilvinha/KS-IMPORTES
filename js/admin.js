@@ -200,18 +200,43 @@ async function salvarProduto() {
 }
 
 // =====================================
+// CONVERTER TEXTO BR (790,00 / 1.400,00) PARA NUMERO
+// =====================================
+
+function converterParaNumero(valorTexto) {
+
+    if (!valorTexto) return NaN;
+
+    const limpo = valorTexto
+        .trim()
+        .replace(/\./g, "")   // remove separador de milhar
+        .replace(",", ".");    // vírgula vira ponto decimal
+
+    return Number(limpo);
+
+}
+
+// =====================================
 // CADASTRAR OU ATUALIZAR NO SUPABASE
 // =====================================
 
 async function gravarProduto(idEditando, imagemBase64) {
 
+    const precoConvertido = converterParaNumero(preco.value);
+    const precoAntigoConvertido = converterParaNumero(precoAntigo.value);
+
+    if (isNaN(precoConvertido) || isNaN(precoAntigoConvertido)) {
+        alert("Preço inválido. Use o formato: 790,00");
+        return;
+    }
+
     const produto = {
 
         nome: nome.value.trim(),
 
-        preco: Number(preco.value),
+        preco: precoConvertido,
 
-        precoAntigo: Number(precoAntigo.value),
+        precoAntigo: precoAntigoConvertido,
 
         imagem: imagemBase64
 
@@ -259,7 +284,7 @@ async function gravarProduto(idEditando, imagemBase64) {
 
         console.error(error);
 
-        alert("Erro ao salvar produto.");
+        alert("Erro ao salvar produto: " + (error.message || "erro desconhecido"));
 
         return;
 
