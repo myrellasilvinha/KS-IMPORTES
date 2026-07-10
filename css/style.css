@@ -325,9 +325,9 @@ header .icon .carrinho {
 .cards-grid {
     display: grid;
     width: 100%;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 220px));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 240px));
     justify-content: start;
-    gap: 16px
+    gap: 16px;
 }
 
 /* No homepage (index.html) as seções ficam soltas dentro do main, sem sidebar */
