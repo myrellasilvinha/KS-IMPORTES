@@ -11,69 +11,194 @@
 </head>
 
 <body>
-    <header>
-        <div class="menu">
+
+    <!-- ================================ -->
+    <!-- TELA DE LOGIN -->
+    <!-- ================================ -->
+    <div id="telaLogin" class="tela-login">
+        <div class="login-card">
             <img src="img/elitebrasiguaio.png" alt="EliteBrasiguaio">
-            <p>Painel Administrativo</p>
-    </header>
-    <main>
-        <section class="formulario">
-            <h2>Novo Produto</h2>
-            <input type="hidden" id="idProduto">
-            <label>Nome do Produto</label>
-            <input type="text" id="nome">
+            <h2>Acesso Restrito</h2>
+            <p>Entre com suas credenciais para acessar o painel administrativo.</p>
 
-            <label>Grupo do Produto</label>
-            <input type="text" id="grupo" list="listaGrupos" placeholder="Ex: Tirzepatida, Retatrutide, Peptídeos...">
-            <datalist id="listaGrupos"></datalist>
+            <label>E-mail</label>
+            <input type="email" id="loginEmail" placeholder="seu@email.com" autocomplete="username">
 
-            <label>Descrição do Produto</label>
-            <textarea id="descricao" rows="4" placeholder="Descreva o produto..."></textarea>
+            <label>Senha</label>
+            <input type="password" id="loginSenha" placeholder="********" autocomplete="current-password">
 
-            <div class="toggle-linha">
-                <label class="toggle-label" for="promocaoAtiva">Produto em promoção?</label>
-                <label class="switch">
-                    <input type="checkbox" id="promocaoAtiva">
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-            <label id="labelPreco">Preço</label>
-            <input type="text" id="preco" inputmode="decimal" placeholder="Ex: 790,00">
-
-            <div id="wrapperPrecoAntigo" class="escondido">
-                <label>Preço Antigo (de/por)</label>
-                <input type="text" id="precoAntigo" inputmode="decimal" placeholder="Ex: 1.400,00">
-            </div>
-
-            <label>Imagem</label>
-            <input type="file" id="imagem" accept="image/*">
-            <button id="salvar">
-                <i class="bi bi-floppy"></i>
-                Salvar Produto
+            <button id="botaoLogin">
+                <i class="bi bi-box-arrow-in-right"></i>
+                Entrar
             </button>
-        </section>
-        <section class="lista">
-            <h2>Produtos Cadastrados</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Imagem</th>
-                        <th>Produto</th>
-                        <th>Grupo</th>
-                        <th>Preço</th>
-                        <th>Promoção</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="listaProdutos">
-                </tbody>
-            </table>
-        </section>
-    </main>
+
+            <p id="loginErro" class="login-erro escondido"></p>
+        </div>
+    </div>
+
+    <!-- ================================ -->
+    <!-- PAINEL ADMINISTRATIVO -->
+    <!-- ================================ -->
+    <div id="painelAdmin" class="escondido">
+
+        <header>
+            <div class="menu">
+                <img src="img/elitebrasiguaio.png" alt="EliteBrasiguaio">
+                <p>Painel Administrativo</p>
+                <button id="botaoLogout" class="botao-logout">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Sair
+                </button>
+            </div>
+        </header>
+
+        <div class="abas-admin">
+            <button class="aba-botao ativa" data-aba="Produtos">
+                <i class="bi bi-box-seam"></i>
+                Produtos
+            </button>
+            <button class="aba-botao" data-aba="Perfumes">
+                <i class="bi bi-droplet"></i>
+                Perfumes
+            </button>
+        </div>
+
+        <main>
+
+            <!-- ================================ -->
+            <!-- ABA: PRODUTOS -->
+            <!-- ================================ -->
+            <div id="painelProdutos" class="aba-conteudo ativa">
+
+                <section class="formulario">
+                    <h2>Novo Produto</h2>
+                    <input type="hidden" id="idProduto">
+                    <label>Nome do Produto</label>
+                    <input type="text" id="nome">
+
+                    <label>Grupo do Produto</label>
+                    <input type="text" id="grupo" list="listaGrupos" placeholder="Ex: Tirzepatida, Retatrutide, Peptídeos...">
+                    <datalist id="listaGrupos"></datalist>
+
+                    <label>Descrição do Produto</label>
+                    <textarea id="descricao" rows="4" placeholder="Descreva o produto..."></textarea>
+
+                    <div class="toggle-linha">
+                        <label class="toggle-label" for="promocaoAtiva">Produto em promoção?</label>
+                        <label class="switch">
+                            <input type="checkbox" id="promocaoAtiva">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <label id="labelPreco">Preço</label>
+                    <input type="text" id="preco" inputmode="decimal" placeholder="Ex: 790,00">
+
+                    <div id="wrapperPrecoAntigo" class="escondido">
+                        <label>Preço Antigo (de/por)</label>
+                        <input type="text" id="precoAntigo" inputmode="decimal" placeholder="Ex: 1.400,00">
+                    </div>
+
+                    <label>Imagem</label>
+                    <input type="file" id="imagem" accept="image/*">
+                    <button id="salvar">
+                        <i class="bi bi-floppy"></i>
+                        Salvar Produto
+                    </button>
+                </section>
+
+                <section class="lista">
+                    <h2>Produtos Cadastrados</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Imagem</th>
+                                <th>Produto</th>
+                                <th>Grupo</th>
+                                <th>Preço</th>
+                                <th>Promoção</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaProdutos">
+                        </tbody>
+                    </table>
+                </section>
+
+            </div>
+
+            <!-- ================================ -->
+            <!-- ABA: PERFUMES -->
+            <!-- ================================ -->
+            <div id="painelPerfumes" class="aba-conteudo">
+
+                <section class="formulario">
+                    <h2>Novo Perfume</h2>
+                    <input type="hidden" id="idPerfume">
+                    <label>Nome do Perfume</label>
+                    <input type="text" id="nomePerfume">
+
+                    <label>Grupo / Marca</label>
+                    <input type="text" id="grupoPerfume" list="listaGruposPerfume" placeholder="Ex: Masculino, Feminino, Importado...">
+                    <datalist id="listaGruposPerfume"></datalist>
+
+                    <label>Descrição do Perfume</label>
+                    <textarea id="descricaoPerfume" rows="4" placeholder="Descreva o perfume..."></textarea>
+
+                    <div class="toggle-linha">
+                        <label class="toggle-label" for="promocaoAtivaPerfume">Perfume em promoção?</label>
+                        <label class="switch">
+                            <input type="checkbox" id="promocaoAtivaPerfume">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <label id="labelPrecoPerfume">Preço</label>
+                    <input type="text" id="precoPerfume" inputmode="decimal" placeholder="Ex: 250,00">
+
+                    <div id="wrapperPrecoAntigoPerfume" class="escondido">
+                        <label>Preço Antigo (de/por)</label>
+                        <input type="text" id="precoAntigoPerfume" inputmode="decimal" placeholder="Ex: 400,00">
+                    </div>
+
+                    <label>Imagem</label>
+                    <input type="file" id="imagemPerfume" accept="image/*">
+                    <button id="salvarPerfume">
+                        <i class="bi bi-floppy"></i>
+                        Salvar Perfume
+                    </button>
+                </section>
+
+                <section class="lista">
+                    <h2>Perfumes Cadastrados</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Imagem</th>
+                                <th>Perfume</th>
+                                <th>Grupo</th>
+                                <th>Preço</th>
+                                <th>Promoção</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaPerfumes">
+                        </tbody>
+                    </table>
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
     <script src="js/admin.js"></script>
+    <script src="js/admin-perfumes.js"></script>
+    <script src="js/admin-abas.js"></script>
     <script src="js/topo.js"></script>
 </body>
 
