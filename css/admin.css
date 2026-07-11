@@ -45,9 +45,123 @@ main {
     width: 95%;
     max-width: 1400px;
     margin: 40px auto;
+}
+
+/* ================================
+   TELA DE LOGIN
+   ================================ */
+
+.tela-login {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 380px;
+    background: var(--black--color);
+    padding: 35px 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
+    text-align: center;
+}
+
+.login-card img {
+    width: 150px;
+    margin-bottom: 15px;
+}
+
+.login-card h2 {
+    margin-bottom: 10px;
+}
+
+.login-card p {
+    font-size: 14px;
+    color: #ccc;
+    margin-bottom: 10px;
+}
+
+.login-card label {
+    display: block;
+    text-align: left;
+    margin-top: 15px;
+    margin-bottom: 8px;
+}
+
+.login-card input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--black--color);
+    border-radius: 8px;
+}
+
+.login-erro {
+    margin-top: 15px;
+    color: #ff6b6b;
+    font-size: 14px;
+}
+
+/* ================================
+   BOTÃO SAIR (LOGOUT)
+   ================================ */
+
+.botao-logout {
+    width: auto;
+    margin-top: 0;
+    background: transparent;
+    border: 1px solid var(--orange--color);
+    color: var(--orange--color);
+    padding: 10px 16px;
+    font-size: 14px;
+}
+
+.botao-logout:hover {
+    background: var(--orange--color);
+    color: var(--black--color);
+}
+
+/* ================================
+   ABAS DO PAINEL (PRODUTOS / PERFUMES)
+   ================================ */
+
+.abas-admin {
+    width: 95%;
+    max-width: 1400px;
+    margin: 30px auto 0;
+    display: flex;
+    gap: 12px;
+}
+
+.aba-botao {
+    width: auto;
+    margin-top: 0;
+    background: var(--black--color);
+    color: var(--text--color);
+    border: 1px solid #333;
+    padding: 12px 22px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.aba-botao.ativa {
+    background: var(--orange--color);
+    color: var(--black--color);
+    border-color: var(--orange--color);
+}
+
+.aba-conteudo {
+    display: none;
+    gap: 40px;
+}
+
+.aba-conteudo.ativa {
     display: grid;
     grid-template-columns: 350px 1fr;
-    gap: 40px;
 }
 
 .formulario {
@@ -237,8 +351,16 @@ td img {
     }
 
     main {
-        grid-template-columns: 1fr;
         width: 90%;
+    }
+
+    .aba-conteudo.ativa {
+        grid-template-columns: 1fr;
+    }
+
+    .abas-admin {
+        width: 90%;
+        flex-wrap: wrap;
     }
 }
 
@@ -246,8 +368,20 @@ td img {
     main {
         width: 100%;
         margin: 20px auto;
-        gap: 20px;
         padding: 0 12px;
+    }
+
+    .abas-admin {
+        width: 100%;
+        padding: 0 12px;
+        margin-top: 20px;
+    }
+
+    .aba-botao {
+        flex: 1;
+        justify-content: center;
+        padding: 10px;
+        font-size: 13px;
     }
 
     .formulario,
