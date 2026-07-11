@@ -110,7 +110,8 @@ async function carregarProdutos() {
 
 }
 
-carregarProdutos();
+// Só carrega os produtos depois do login (ver js/auth.js)
+document.addEventListener("admin-autenticado", carregarProdutos);
 
 // ================================
 // FORMATAR PREÇO
@@ -506,7 +507,11 @@ window.addEventListener(
     "focus",
     () => {
 
-        carregarProdutos();
+        const painel = document.getElementById("painelAdmin");
+
+        if (painel && !painel.classList.contains("escondido")) {
+            carregarProdutos();
+        }
 
     }
 );
